@@ -1,0 +1,48 @@
+name: Nightly
+
+on:
+  schedule:
+    # Run at 2 AM UTC every day
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  test-nightly:
+    name: Test on Nightly Rust
+    runs-on: ubuntu-latest
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust Nightly
+        uses: dtolnay/rust-toolchain@nightly
+
+      - name: Run tests
+        run: cargo test --all-features
+
+      - name: Run clippy
+        run: cargo clippy --all-targets --all-features
+
+  dependency-updates:
+    name: Check Dependency Updates
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+
+      - name: Install cargo-outdated
+        run: cargo install cargo-outdated
+
+      - name: Check for outdated dependencies
+        run: cargo outdated --workspace --format json > outdated.json
+
+      - name: Upload outdated report
+        uses: actions/upload-artifact@v4
+        with:
+          name: outdated-dependencies
+          path: outdated.json
