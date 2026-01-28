@@ -347,11 +347,9 @@ impl MessageResponse {
     /// ```
     pub fn get_text(&self) -> String {
         // Fast path for single block (very common case)
-        if self.content.len() == 1 {
-            if let Some(block) = self.content.first() {
-                if block.content_type == "text" {
-                    return block.text.clone();
-                }
+        if let [block] = self.content.as_slice() {
+            if block.content_type == "text" {
+                return block.text.clone();
             }
         }
 
