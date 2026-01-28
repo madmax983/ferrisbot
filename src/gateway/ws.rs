@@ -67,7 +67,7 @@ use tracing::{debug, error, info};
 /// # Example
 ///
 /// ```
-/// use ferrisbot::gateway::ws::WsCommand;
+/// use jules_control_plane::gateway::ws::WsCommand;
 ///
 /// let json = r#"{"type":"ping"}"#;
 /// let cmd: WsCommand = serde_json::from_str(json).unwrap();
@@ -99,7 +99,7 @@ pub enum WsCommand {
 /// # Example
 ///
 /// ```
-/// use ferrisbot::gateway::ws::WsResponse;
+/// use jules_control_plane::gateway::ws::WsResponse;
 ///
 /// let response = WsResponse::Pong;
 /// let json = serde_json::to_string(&response).unwrap();

@@ -6,7 +6,7 @@
 //! # Example
 //!
 //! ```
-//! use ferrisbot::types::Message;
+//! use jules_control_plane::types::Message;
 //!
 //! // Create a new message
 //! let msg = Message::new("Hello, world!");
@@ -34,7 +34,7 @@ use serde::{Deserialize, Serialize};
 /// Creating a new message:
 ///
 /// ```
-/// use ferrisbot::types::Message;
+/// use jules_control_plane::types::Message;
 ///
 /// let msg = Message::new("Hello!");
 /// assert_eq!(msg.content, "Hello!");
@@ -43,7 +43,7 @@ use serde::{Deserialize, Serialize};
 /// Creating from a `String`:
 ///
 /// ```
-/// use ferrisbot::types::Message;
+/// use jules_control_plane::types::Message;
 ///
 /// let content = String::from("Dynamic content");
 /// let msg = Message::new(content);
@@ -53,7 +53,7 @@ use serde::{Deserialize, Serialize};
 /// Serialization:
 ///
 /// ```
-/// use ferrisbot::types::Message;
+/// use jules_control_plane::types::Message;
 ///
 /// let msg = Message::new("Test");
 /// let json = serde_json::to_string(&msg).unwrap();
@@ -63,7 +63,7 @@ use serde::{Deserialize, Serialize};
 /// Deserialization:
 ///
 /// ```
-/// use ferrisbot::types::Message;
+/// use jules_control_plane::types::Message;
 ///
 /// let json = r#"{"content":"From JSON"}"#;
 /// let msg: Message = serde_json::from_str(json).unwrap();
@@ -88,7 +88,7 @@ impl Message {
     /// # Examples
     ///
     /// ```
-    /// use ferrisbot::types::Message;
+    /// use jules_control_plane::types::Message;
     ///
     /// // From a string literal
     /// let msg1 = Message::new("Hello");
@@ -112,7 +112,7 @@ impl Message {
     /// # Examples
     ///
     /// ```
-    /// use ferrisbot::types::Message;
+    /// use jules_control_plane::types::Message;
     ///
     /// let empty = Message::new("");
     /// assert!(empty.is_empty());
@@ -132,7 +132,7 @@ impl Message {
     /// # Examples
     ///
     /// ```
-    /// use ferrisbot::types::Message;
+    /// use jules_control_plane::types::Message;
     ///
     /// let msg = Message::new("Hello");
     /// assert_eq!(msg.len(), 5);

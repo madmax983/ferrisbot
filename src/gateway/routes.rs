@@ -29,7 +29,7 @@
 /// # In Tests
 ///
 /// ```
-/// use ferrisbot::gateway::routes::health;
+/// use jules_control_plane::gateway::routes::health;
 ///
 /// #[tokio::main]
 /// async fn main() {

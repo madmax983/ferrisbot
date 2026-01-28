@@ -6,7 +6,7 @@
 //! # Example
 //!
 //! ```
-//! use ferrisbot::discord::bot::DiscordBot;
+//! use jules_control_plane::discord::bot::DiscordBot;
 //! use serenity::all::GatewayIntents;
 //!
 //! // Simple creation with default intents
@@ -38,7 +38,7 @@ use tokio::sync::mpsc;
 /// # Example
 ///
 /// ```
-/// use ferrisbot::discord::bot::DiscordBot;
+/// use jules_control_plane::discord::bot::DiscordBot;
 ///
 /// let bot = DiscordBot::new("your-token");
 /// assert!(bot.intents().contains(serenity::all::GatewayIntents::GUILD_MESSAGES));
@@ -58,7 +58,7 @@ impl DiscordBot {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::discord::bot::DiscordBot;
+    /// use jules_control_plane::discord::bot::DiscordBot;
     ///
     /// let bot = DiscordBot::new("your-bot-token");
     /// ```
@@ -73,7 +73,7 @@ impl DiscordBot {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::discord::bot::DiscordBot;
+    /// use jules_control_plane::discord::bot::DiscordBot;
     /// use serenity::all::GatewayIntents;
     ///
     /// let bot = DiscordBot::builder("token")
@@ -94,7 +94,7 @@ impl DiscordBot {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::discord::bot::DiscordBot;
+    /// use jules_control_plane::discord::bot::DiscordBot;
     ///
     /// let bot = DiscordBot::new("my-token");
     /// assert_eq!(bot.token(), "my-token");
@@ -108,7 +108,7 @@ impl DiscordBot {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::discord::bot::DiscordBot;
+    /// use jules_control_plane::discord::bot::DiscordBot;
     /// use serenity::all::GatewayIntents;
     ///
     /// let bot = DiscordBot::new("token");
@@ -138,13 +138,13 @@ impl DiscordBot {
     /// # Example
     ///
     /// ```no_run
-    /// use ferrisbot::discord::bot::DiscordBot;
-    /// use ferrisbot::llm::claude::ClaudeClient;
+    /// use jules_control_plane::discord::bot::DiscordBot;
+    /// use jules_control_plane::llm::claude::ClaudeClient;
     /// use std::sync::Arc;
     /// use tokio::sync::mpsc;
     ///
     /// #[tokio::main]
-    /// async fn main() -> ferrisbot::error::Result<()> {
+    /// async fn main() -> jules_control_plane::error::Result<()> {
     ///     let bot = DiscordBot::new("token");
     ///     let claude = Arc::new(ClaudeClient::new("api-key"));
     ///     let (tx, rx) = mpsc::channel(1);
@@ -193,7 +193,7 @@ impl DiscordBot {
 /// # Example
 ///
 /// ```
-/// use ferrisbot::discord::bot::DiscordBot;
+/// use jules_control_plane::discord::bot::DiscordBot;
 /// use serenity::all::GatewayIntents;
 ///
 /// let bot = DiscordBot::builder("token")
@@ -215,7 +215,7 @@ impl DiscordBotBuilder {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::discord::bot::DiscordBot;
+    /// use jules_control_plane::discord::bot::DiscordBot;
     /// use serenity::all::GatewayIntents;
     ///
     /// let bot = DiscordBot::builder("token")

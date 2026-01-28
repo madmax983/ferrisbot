@@ -7,7 +7,7 @@
 //! # Example
 //!
 //! ```
-//! use ferrisbot::llm::types::{CreateMessageRequest, Message};
+//! use jules_control_plane::llm::types::{CreateMessageRequest, Message};
 //!
 //! // Create a simple request
 //! let request = CreateMessageRequest::new(vec![
@@ -43,7 +43,7 @@ pub const ROLE_ASSISTANT: &str = "assistant";
 /// # Example
 ///
 /// ```
-/// use ferrisbot::llm::types::Message;
+/// use jules_control_plane::llm::types::Message;
 ///
 /// // Create a user message
 /// let user_msg = Message::user("What is 2 + 2?");
@@ -72,7 +72,7 @@ impl Message {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::llm::types::Message;
+    /// use jules_control_plane::llm::types::Message;
     ///
     /// let msg = Message::user("Hello!");
     /// assert_eq!(msg.role, "user");
@@ -92,7 +92,7 @@ impl Message {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::llm::types::Message;
+    /// use jules_control_plane::llm::types::Message;
     ///
     /// let msg = Message::assistant("I can help with that!");
     /// assert_eq!(msg.role, "assistant");
@@ -113,7 +113,7 @@ impl Message {
 /// # Example
 ///
 /// ```
-/// use ferrisbot::llm::types::{CreateMessageRequest, Message};
+/// use jules_control_plane::llm::types::{CreateMessageRequest, Message};
 ///
 /// // Simple request with defaults
 /// let request = CreateMessageRequest::new(vec![
@@ -131,7 +131,7 @@ impl Message {
 /// # JSON Format
 ///
 /// ```
-/// use ferrisbot::llm::types::{CreateMessageRequest, Message};
+/// use jules_control_plane::llm::types::{CreateMessageRequest, Message};
 ///
 /// let request = CreateMessageRequest::new(vec![Message::user("Hi")]);
 /// let json = serde_json::to_value(&request).unwrap();
@@ -150,6 +150,10 @@ pub struct CreateMessageRequest {
 
     /// The conversation messages.
     pub messages: Vec<Message>,
+
+    /// System prompt.
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub system: Option<String>,
 }
 
 impl CreateMessageRequest {
@@ -164,7 +168,7 @@ impl CreateMessageRequest {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::llm::types::{CreateMessageRequest, Message, DEFAULT_MODEL};
+    /// use jules_control_plane::llm::types::{CreateMessageRequest, Message, DEFAULT_MODEL};
     ///
     /// let request = CreateMessageRequest::new(vec![Message::user("Hello")]);
     /// assert_eq!(request.model, DEFAULT_MODEL);
@@ -174,7 +178,25 @@ impl CreateMessageRequest {
             model: DEFAULT_MODEL.to_string(),
             max_tokens: DEFAULT_MAX_TOKENS,
             messages,
+            system: None,
         }
+    }
+
+    /// Set a system prompt.
+    ///
+    /// # Example
+    ///
+    /// ```
+    /// use jules_control_plane::llm::types::{CreateMessageRequest, Message};
+    ///
+    /// let request = CreateMessageRequest::new(vec![Message::user("Hi")])
+    ///     .with_system("You are a helpful assistant.");
+    ///
+    /// assert_eq!(request.system, Some("You are a helpful assistant.".to_string()));
+    /// ```
+    pub fn with_system(mut self, system: impl Into<String>) -> Self {
+        self.system = Some(system.into());
+        self
     }
 
     /// Set a custom model.
@@ -182,7 +204,7 @@ impl CreateMessageRequest {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::llm::types::{CreateMessageRequest, Message};
+    /// use jules_control_plane::llm::types::{CreateMessageRequest, Message};
     ///
     /// let request = CreateMessageRequest::new(vec![Message::user("Hi")])
     ///     .with_model("claude-opus-4-20250514");
@@ -199,7 +221,7 @@ impl CreateMessageRequest {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::llm::types::{CreateMessageRequest, Message};
+    /// use jules_control_plane::llm::types::{CreateMessageRequest, Message};
     ///
     /// let request = CreateMessageRequest::new(vec![Message::user("Hi")])
     ///     .with_max_tokens(1024);
@@ -220,7 +242,7 @@ impl CreateMessageRequest {
 /// # Example
 ///
 /// ```
-/// use ferrisbot::llm::types::ContentBlock;
+/// use jules_control_plane::llm::types::ContentBlock;
 ///
 /// let json = r#"{"type": "text", "text": "Hello!"}"#;
 /// let block: ContentBlock = serde_json::from_str(json).unwrap();
@@ -243,7 +265,7 @@ pub struct ContentBlock {
 /// # Example
 ///
 /// ```
-/// use ferrisbot::llm::types::Usage;
+/// use jules_control_plane::llm::types::Usage;
 ///
 /// let json = r#"{"input_tokens": 10, "output_tokens": 25}"#;
 /// let usage: Usage = serde_json::from_str(json).unwrap();
@@ -266,7 +288,7 @@ impl Usage {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::llm::types::Usage;
+    /// use jules_control_plane::llm::types::Usage;
     ///
     /// let usage = Usage { input_tokens: 10, output_tokens: 25 };
     /// assert_eq!(usage.total(), 35);
@@ -284,7 +306,7 @@ impl Usage {
 /// # Example
 ///
 /// ```
-/// use ferrisbot::llm::types::MessageResponse;
+/// use jules_control_plane::llm::types::MessageResponse;
 ///
 /// let json = r#"{
 ///     "id": "msg_123",
@@ -333,7 +355,7 @@ impl MessageResponse {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::llm::types::MessageResponse;
+    /// use jules_control_plane::llm::types::MessageResponse;
     ///
     /// let json = r#"{
     ///     "id": "msg_1", "type": "message", "role": "assistant",
@@ -359,7 +381,7 @@ impl MessageResponse {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::llm::types::MessageResponse;
+    /// use jules_control_plane::llm::types::MessageResponse;
     ///
     /// let json = r#"{
     ///     "id": "msg_1", "type": "message", "role": "assistant",
@@ -380,7 +402,7 @@ impl MessageResponse {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::llm::types::MessageResponse;
+    /// use jules_control_plane::llm::types::MessageResponse;
     ///
     /// let json = r#"{
     ///     "id": "msg_1", "type": "message", "role": "assistant",
@@ -410,6 +432,7 @@ mod tests {
                 role: "user".to_string(),
                 content: "Hello!".to_string(),
             }],
+            system: Some("You are a bot".to_string()),
         };
 
         let json = serde_json::to_value(&request).expect("should serialize");
@@ -417,6 +440,7 @@ mod tests {
         assert_eq!(json["max_tokens"], 1024);
         assert_eq!(json["messages"][0]["role"], "user");
         assert_eq!(json["messages"][0]["content"], "Hello!");
+        assert_eq!(json["system"], "You are a bot");
     }
 
     #[test]
@@ -469,6 +493,7 @@ mod tests {
                 role: "user".to_string(),
                 content: "Test".to_string(),
             }],
+            system: None,
         };
 
         let json = serde_json::to_string(&request).expect("should serialize");

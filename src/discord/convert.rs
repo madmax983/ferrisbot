@@ -30,7 +30,7 @@ use serenity::all::Message as DiscordMessage;
 /// This function is typically used in event handlers:
 ///
 /// ```ignore
-/// use ferrisbot::discord::convert::to_ferris_message;
+/// use jules_control_plane::discord::convert::to_ferris_message;
 ///
 /// async fn handle_message(msg: serenity::all::Message) {
 ///     let internal_msg = to_ferris_message(&msg);
@@ -67,7 +67,7 @@ pub fn to_ferris_message(discord_msg: &DiscordMessage) -> FerrisMessage {
 /// # Example
 ///
 /// ```ignore
-/// use ferrisbot::discord::convert::should_process_message;
+/// use jules_control_plane::discord::convert::should_process_message;
 ///
 /// async fn handle_message(msg: serenity::all::Message) {
 ///     if !should_process_message(&msg) {
@@ -114,7 +114,7 @@ pub fn should_process_message(discord_msg: &DiscordMessage) -> bool {
 /// # Example
 ///
 /// ```
-/// use ferrisbot::discord::convert::should_process_in_channel;
+/// use jules_control_plane::discord::convert::should_process_in_channel;
 /// use serenity::all::ChannelId;
 ///
 /// let channel = ChannelId::new(123456789);

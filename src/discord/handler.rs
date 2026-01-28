@@ -14,8 +14,8 @@
 //! # Example
 //!
 //! ```
-//! use ferrisbot::discord::handler::BotHandler;
-//! use ferrisbot::llm::claude::ClaudeClient;
+//! use jules_control_plane::discord::handler::BotHandler;
+//! use jules_control_plane::llm::claude::ClaudeClient;
 //! use std::sync::Arc;
 //!
 //! let claude = Arc::new(ClaudeClient::new("api-key"));
@@ -43,8 +43,8 @@ use tracing::{error, info};
 /// # Example
 ///
 /// ```
-/// use ferrisbot::discord::handler::BotHandler;
-/// use ferrisbot::llm::claude::ClaudeClient;
+/// use jules_control_plane::discord::handler::BotHandler;
+/// use jules_control_plane::llm::claude::ClaudeClient;
 /// use std::sync::Arc;
 ///
 /// let claude = Arc::new(ClaudeClient::new("api-key"));
@@ -64,8 +64,8 @@ impl BotHandler {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::discord::handler::BotHandler;
-    /// use ferrisbot::llm::claude::ClaudeClient;
+    /// use jules_control_plane::discord::handler::BotHandler;
+    /// use jules_control_plane::llm::claude::ClaudeClient;
     /// use std::sync::Arc;
     ///
     /// let claude = Arc::new(ClaudeClient::new("api-key"));
@@ -95,7 +95,8 @@ impl EventHandler for BotHandler {
         let ferris_msg = to_ferris_message(&msg);
 
         // Send to Claude
-        let request = CreateMessageRequest::new(vec![ClaudeMessage::user(&ferris_msg.content)]);
+        let request = CreateMessageRequest::new(vec![ClaudeMessage::user(&ferris_msg.content)])
+            .with_system("You are Jules, an extremely skilled software engineer. You are operating as a control plane via Discord.");
 
         match self.claude_client.send_message(request).await {
             Ok(response) => {

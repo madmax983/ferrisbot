@@ -2,17 +2,17 @@
 
 ## Project Overview
 
-**Ferrisbot** is a Discord bot powered by Claude AI, built with Rust using strict Test-Driven Development (TDD) principles.
+**Jules Control Plane** is a Discord control plane powered by Jules (AI Agent), built with Rust using strict Test-Driven Development (TDD) principles.
 
-**Current Status:** v0.1.0 - MVP Foundation Complete
+**Current Status:** v0.1.0 - Foundation Complete
 
 ### What We're Building
 
 **MVP (v0.1.0 - COMPLETE):** A solid foundation providing:
 - Discord message handling with filtering
-- Claude API integration with error handling
+- Jules API integration with error handling (compatible with Claude API)
 - HTTP/WebSocket gateway for monitoring
-- Basic chat: User → Discord → Claude → Reply
+- Basic chat: User → Discord → Jules → Reply
 
 **Post-MVP (v0.2.0+):** Extending the foundation with:
 - Agent framework and tool use
@@ -26,7 +26,7 @@
 ### Architecture
 
 ```
-Discord Bot (Serenity) ←→ Claude Client (Reqwest) ←→ Anthropic API
+Discord Bot (Serenity) ←→ Jules Client (Reqwest) ←→ Jules/Anthropic API
            ↓
     HTTP Gateway (Axum)
     - /health endpoint
@@ -732,6 +732,7 @@ Required:
 Optional:
 - `GATEWAY_PORT` - Gateway port (default: 18789)
 - `RUST_LOG` - Logging level (default: info)
+- `JULES_API_URL` - Custom API URL
 
 **NEVER commit secrets to git!**
 

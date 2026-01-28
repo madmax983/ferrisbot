@@ -14,10 +14,10 @@
 //! # Example
 //!
 //! ```no_run
-//! use ferrisbot::app::{App, AppConfig};
+//! use jules_control_plane::app::{App, AppConfig};
 //!
 //! #[tokio::main]
-//! async fn main() -> ferrisbot::error::Result<()> {
+//! async fn main() -> jules_control_plane::error::Result<()> {
 //!     let config = AppConfig::from_env()?;
 //!     let app = App::new(config);
 //!     app.run().await
@@ -46,11 +46,12 @@ use tracing::info;
 /// # Optional Environment Variables
 ///
 /// - `GATEWAY_PORT` - Port for the HTTP gateway (default: 18789)
+/// - `JULES_API_URL` - Custom API URL for the LLM provider
 ///
 /// # Example
 ///
 /// ```no_run
-/// use ferrisbot::app::AppConfig;
+/// use jules_control_plane::app::AppConfig;
 ///
 /// // Load from environment
 /// let config = AppConfig::from_env().expect("Missing required env vars");
@@ -61,12 +62,13 @@ use tracing::info;
 /// Or create manually for testing:
 ///
 /// ```
-/// use ferrisbot::app::AppConfig;
+/// use jules_control_plane::app::AppConfig;
 ///
 /// let config = AppConfig {
 ///     discord_token: "test-token".to_string(),
 ///     claude_api_key: "test-key".to_string(),
 ///     gateway_port: 8080,
+///     api_url: None,
 /// };
 ///
 /// assert_eq!(config.gateway_port, 8080);
@@ -80,6 +82,9 @@ pub struct AppConfig {
 
     /// Port for the HTTP gateway server.
     pub gateway_port: u16,
+
+    /// Custom API URL.
+    pub api_url: Option<String>,
 }
 
 impl AppConfig {
@@ -94,10 +99,10 @@ impl AppConfig {
     /// # Example
     ///
     /// ```no_run
-    /// use ferrisbot::app::AppConfig;
+    /// use jules_control_plane::app::AppConfig;
     ///
     /// let config = AppConfig::from_env()?;
-    /// # Ok::<(), ferrisbot::error::FerrisError>(())
+    /// # Ok::<(), jules_control_plane::error::FerrisError>(())
     /// ```
     pub fn from_env() -> Result<Self> {
         let discord_token = env::var("DISCORD_TOKEN")
@@ -112,10 +117,13 @@ impl AppConfig {
             .and_then(|p| p.parse().ok())
             .unwrap_or(DEFAULT_PORT);
 
+        let api_url = env::var("JULES_API_URL").ok();
+
         Ok(Self {
             discord_token,
             claude_api_key,
             gateway_port,
+            api_url,
         })
     }
 }
@@ -128,14 +136,15 @@ impl AppConfig {
 /// # Example
 ///
 /// ```no_run
-/// use ferrisbot::app::{App, AppConfig};
+/// use jules_control_plane::app::{App, AppConfig};
 ///
 /// #[tokio::main]
-/// async fn main() -> ferrisbot::error::Result<()> {
+/// async fn main() -> jules_control_plane::error::Result<()> {
 ///     let config = AppConfig {
 ///         discord_token: std::env::var("DISCORD_TOKEN").unwrap(),
 ///         claude_api_key: std::env::var("ANTHROPIC_API_KEY").unwrap(),
 ///         gateway_port: 18789,
+    ///         api_url: None,
 ///     };
 ///
 ///     let app = App::new(config);
@@ -161,19 +170,25 @@ impl App {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::app::{App, AppConfig};
+    /// use jules_control_plane::app::{App, AppConfig};
     ///
     /// let config = AppConfig {
     ///     discord_token: "test-token".to_string(),
     ///     claude_api_key: "test-key".to_string(),
     ///     gateway_port: 8080,
+    ///     api_url: None,
     /// };
     ///
     /// let app = App::new(config);
     /// ```
     pub fn new(config: AppConfig) -> Self {
         let discord_bot = DiscordBot::new(&config.discord_token);
-        let claude_client = Arc::new(ClaudeClient::new(&config.claude_api_key));
+
+        let mut client_builder = ClaudeClient::builder(&config.claude_api_key);
+        if let Some(url) = &config.api_url {
+            client_builder = client_builder.api_url(url);
+        }
+        let claude_client = Arc::new(client_builder.build());
 
         Self {
             config,
@@ -291,6 +306,7 @@ mod tests {
             discord_token: "test-token".to_string(),
             claude_api_key: "test-key".to_string(),
             gateway_port: 8080,
+            api_url: None,
         };
 
         let app = App::new(config);
@@ -305,5 +321,21 @@ mod tests {
 
         let result = AppConfig::from_env();
         assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_app_config_with_custom_url() {
+        // Set env vars
+        env::set_var("DISCORD_TOKEN", "test");
+        env::set_var("ANTHROPIC_API_KEY", "test");
+        env::set_var("JULES_API_URL", "https://custom.api.com");
+
+        let config = AppConfig::from_env().expect("Should load config");
+        assert_eq!(config.api_url, Some("https://custom.api.com".to_string()));
+
+        // Cleanup
+        env::remove_var("DISCORD_TOKEN");
+        env::remove_var("ANTHROPIC_API_KEY");
+        env::remove_var("JULES_API_URL");
     }
 }

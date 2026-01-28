@@ -7,7 +7,7 @@
 //! # Example
 //!
 //! ```
-//! use ferrisbot::error::{FerrisError, Result};
+//! use jules_control_plane::error::{FerrisError, Result};
 //!
 //! fn load_config(key: &str) -> Result<String> {
 //!     if key.is_empty() {
@@ -42,7 +42,7 @@ use thiserror::Error;
 /// # Example
 ///
 /// ```
-/// use ferrisbot::error::FerrisError;
+/// use jules_control_plane::error::FerrisError;
 ///
 /// // Create a configuration error
 /// let err = FerrisError::Config("DISCORD_TOKEN not set".to_string());
@@ -62,7 +62,7 @@ pub enum FerrisError {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::error::FerrisError;
+    /// use jules_control_plane::error::FerrisError;
     ///
     /// let err = FerrisError::Config("API key not provided".to_string());
     /// assert_eq!(err.to_string(), "Configuration error: API key not provided");
@@ -87,7 +87,7 @@ pub enum FerrisError {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::error::FerrisError;
+    /// use jules_control_plane::error::FerrisError;
     ///
     /// let err = FerrisError::Discord("Connection timeout".to_string());
     /// assert!(err.to_string().contains("Discord"));
@@ -100,7 +100,7 @@ pub enum FerrisError {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::error::FerrisError;
+    /// use jules_control_plane::error::FerrisError;
     ///
     /// let err = FerrisError::Claude("Rate limit exceeded".to_string());
     /// assert!(err.to_string().contains("Claude"));
@@ -121,7 +121,7 @@ pub enum FerrisError {
 /// # Example
 ///
 /// ```
-/// use ferrisbot::error::Result;
+/// use jules_control_plane::error::Result;
 ///
 /// fn do_something() -> Result<String> {
 ///     Ok("success".to_string())

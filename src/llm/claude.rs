@@ -6,11 +6,11 @@
 //! # Example
 //!
 //! ```no_run
-//! use ferrisbot::llm::claude::ClaudeClient;
-//! use ferrisbot::llm::types::{CreateMessageRequest, Message};
+//! use jules_control_plane::llm::claude::ClaudeClient;
+//! use jules_control_plane::llm::types::{CreateMessageRequest, Message};
 //!
 //! #[tokio::main]
-//! async fn main() -> ferrisbot::error::Result<()> {
+//! async fn main() -> jules_control_plane::error::Result<()> {
 //!     let client = ClaudeClient::new("your-api-key");
 //!
 //!     let request = CreateMessageRequest::new(vec![
@@ -28,7 +28,7 @@
 //! For advanced configuration, use the builder:
 //!
 //! ```
-//! use ferrisbot::llm::claude::ClaudeClient;
+//! use jules_control_plane::llm::claude::ClaudeClient;
 //! use std::time::Duration;
 //!
 //! let client = ClaudeClient::builder("api-key")
@@ -58,7 +58,7 @@ const ANTHROPIC_VERSION: &str = "2023-06-01";
 /// # Example
 ///
 /// ```
-/// use ferrisbot::llm::claude::ClaudeClient;
+/// use jules_control_plane::llm::claude::ClaudeClient;
 ///
 /// // Simple creation with defaults
 /// let client = ClaudeClient::new("your-api-key");
@@ -89,7 +89,7 @@ impl ClaudeClient {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::llm::claude::ClaudeClient;
+    /// use jules_control_plane::llm::claude::ClaudeClient;
     ///
     /// let client = ClaudeClient::new("sk-ant-api-key");
     /// ```
@@ -104,7 +104,7 @@ impl ClaudeClient {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::llm::claude::ClaudeClient;
+    /// use jules_control_plane::llm::claude::ClaudeClient;
     /// use std::time::Duration;
     ///
     /// let client = ClaudeClient::builder("api-key")
@@ -124,7 +124,7 @@ impl ClaudeClient {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::llm::claude::ClaudeClient;
+    /// use jules_control_plane::llm::claude::ClaudeClient;
     ///
     /// let client = ClaudeClient::new("my-key");
     /// assert_eq!(client.api_key(), "my-key");
@@ -138,7 +138,7 @@ impl ClaudeClient {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::llm::claude::ClaudeClient;
+    /// use jules_control_plane::llm::claude::ClaudeClient;
     ///
     /// let client = ClaudeClient::new("key");
     /// assert!(client.api_url().contains("anthropic.com"));
@@ -167,11 +167,11 @@ impl ClaudeClient {
     /// # Example
     ///
     /// ```no_run
-    /// use ferrisbot::llm::claude::ClaudeClient;
-    /// use ferrisbot::llm::types::{CreateMessageRequest, Message};
+    /// use jules_control_plane::llm::claude::ClaudeClient;
+    /// use jules_control_plane::llm::types::{CreateMessageRequest, Message};
     ///
     /// # #[tokio::main]
-    /// # async fn main() -> ferrisbot::error::Result<()> {
+    /// # async fn main() -> jules_control_plane::error::Result<()> {
     /// let client = ClaudeClient::new("api-key");
     ///
     /// let request = CreateMessageRequest::new(vec![
@@ -221,7 +221,7 @@ impl ClaudeClient {
 /// # Example
 ///
 /// ```
-/// use ferrisbot::llm::claude::ClaudeClient;
+/// use jules_control_plane::llm::claude::ClaudeClient;
 /// use std::time::Duration;
 ///
 /// let client = ClaudeClient::builder("api-key")
@@ -245,7 +245,7 @@ impl ClaudeClientBuilder {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::llm::claude::ClaudeClient;
+    /// use jules_control_plane::llm::claude::ClaudeClient;
     ///
     /// let client = ClaudeClient::builder("key")
     ///     .api_url("http://localhost:8080/v1/messages")
@@ -264,7 +264,7 @@ impl ClaudeClientBuilder {
     /// # Example
     ///
     /// ```
-    /// use ferrisbot::llm::claude::ClaudeClient;
+    /// use jules_control_plane::llm::claude::ClaudeClient;
     /// use std::time::Duration;
     ///
     /// let client = ClaudeClient::builder("key")

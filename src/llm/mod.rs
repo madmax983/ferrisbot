@@ -11,11 +11,11 @@
 //! # Example
 //!
 //! ```no_run
-//! use ferrisbot::llm::claude::ClaudeClient;
-//! use ferrisbot::llm::types::{CreateMessageRequest, Message};
+//! use jules_control_plane::llm::claude::ClaudeClient;
+//! use jules_control_plane::llm::types::{CreateMessageRequest, Message};
 //!
 //! #[tokio::main]
-//! async fn main() -> ferrisbot::error::Result<()> {
+//! async fn main() -> jules_control_plane::error::Result<()> {
 //!     // Create a client
 //!     let client = ClaudeClient::new("your-api-key");
 //!

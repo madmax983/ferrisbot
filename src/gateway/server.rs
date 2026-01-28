@@ -6,7 +6,7 @@
 //! # Example
 //!
 //! ```no_run
-//! use ferrisbot::gateway::server::{create_router, create_addr, DEFAULT_PORT};
+//! use jules_control_plane::gateway::server::{create_router, create_addr, DEFAULT_PORT};
 //!
 //! #[tokio::main]
 //! async fn main() -> std::io::Result<()> {
@@ -31,7 +31,7 @@ use std::net::SocketAddr;
 /// # Example
 ///
 /// ```
-/// use ferrisbot::gateway::server::DEFAULT_PORT;
+/// use jules_control_plane::gateway::server::DEFAULT_PORT;
 ///
 /// assert_eq!(DEFAULT_PORT, 18789);
 /// ```
@@ -46,7 +46,7 @@ pub const DEFAULT_PORT: u16 = 18789;
 /// # Example
 ///
 /// ```
-/// use ferrisbot::gateway::server::create_router;
+/// use jules_control_plane::gateway::server::create_router;
 ///
 /// let router = create_router();
 /// // Router is ready to be served
@@ -55,7 +55,7 @@ pub const DEFAULT_PORT: u16 = 18789;
 /// # With Axum
 ///
 /// ```no_run
-/// use ferrisbot::gateway::server::create_router;
+/// use jules_control_plane::gateway::server::create_router;
 ///
 /// #[tokio::main]
 /// async fn main() -> std::io::Result<()> {
@@ -81,7 +81,7 @@ pub fn create_router() -> Router {
 /// # Example
 ///
 /// ```
-/// use ferrisbot::gateway::server::create_addr;
+/// use jules_control_plane::gateway::server::create_addr;
 ///
 /// let addr = create_addr(8080);
 /// assert_eq!(addr.port(), 8080);
@@ -91,7 +91,7 @@ pub fn create_router() -> Router {
 /// # With Default Port
 ///
 /// ```
-/// use ferrisbot::gateway::server::{create_addr, DEFAULT_PORT};
+/// use jules_control_plane::gateway::server::{create_addr, DEFAULT_PORT};
 ///
 /// let addr = create_addr(DEFAULT_PORT);
 /// assert_eq!(addr.port(), 18789);

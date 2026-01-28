@@ -19,7 +19,7 @@
 //! # Example
 //!
 //! ```no_run
-//! use ferrisbot::gateway::server::{create_router, create_addr, DEFAULT_PORT};
+//! use jules_control_plane::gateway::server::{create_router, create_addr, DEFAULT_PORT};
 //!
 //! #[tokio::main]
 //! async fn main() -> std::io::Result<()> {

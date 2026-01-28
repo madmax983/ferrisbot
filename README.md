@@ -1,24 +1,24 @@
-# Ferrisbot
+# Jules Control Plane
 
-A Rust-based Discord bot powered by Claude AI, built with strict TDD principles.
+A Rust-based Discord control plane powered by Jules (an AI software engineer), built with strict TDD principles.
 
-**Current Status:** v0.1.0 - MVP Complete ✅
+**Current Status:** v0.1.0 - Foundation Complete ✅
 
 This is a **foundational implementation** providing core infrastructure for:
 - Discord message handling
-- Claude API integration
+- Jules API integration (via Claude-compatible API)
 - HTTP/WebSocket gateway
-- Basic chat functionality
+- Control plane functionality
 
 **Ready to extend with:** Agent framework, tool use, streaming, persistence, advanced conversation management, and more.
 
 ## Architecture
 
-Ferrisbot is structured into modular components:
+Jules Control Plane is structured into modular components:
 
 - **`types/`** - Core message types with serialization
 - **`error/`** - Unified error handling with `thiserror`
-- **`llm/`** - Claude API client with request/response types
+- **`llm/`** - LLM API client with request/response types
 - **`discord/`** - Discord bot wrapper and message conversion
 - **`gateway/`** - Axum HTTP server with WebSocket support
 - **`app`** - Application orchestration layer
@@ -29,12 +29,12 @@ Ferrisbot is structured into modular components:
 
 **Core Infrastructure:**
 - **Phase 1: Foundation** - Core types, error handling, serialization
-- **Phase 2: Claude API Client** - Full API integration with mocked tests
+- **Phase 2: API Client** - Full API integration with mocked tests
 - **Phase 3: Discord Integration** - Bot setup, message conversion, reply helpers
 - **Phase 4: Gateway** - HTTP server with health check and WebSocket endpoints
 - **Phase 5: Integration** - Full message flow, Discord event handler, end-to-end tests
 
-### 🚧 Next Steps (Post-MVP)
+### 🚧 Next Steps
 
 The foundation is solid. Now we can build:
 
@@ -61,13 +61,13 @@ The foundation is solid. Now we can build:
 ## Test Coverage
 
 ```
-✅ 48 tests passing (44 unit + 4 integration)
-- 8 types/error tests
-- 15 LLM client tests
-- 10 Discord tests (including handler)
-- 8 gateway tests (including WebSocket)
-- 2 app tests
-- 4 integration tests (end-to-end)
+✅ Tests passing
+- types/error tests
+- LLM client tests
+- Discord tests (including handler)
+- gateway tests (including WebSocket)
+- app tests
+- integration tests (end-to-end)
 ```
 
 ### Message Flow
@@ -77,7 +77,7 @@ Discord User → Discord Message Event
     ↓
 BotHandler (filters, converts)
     ↓
-Claude API (send_message)
+Jules API (send_message with System Prompt)
     ↓
 Response Processing
     ↓
@@ -102,7 +102,7 @@ curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
 
 # Clone the repository
 git clone <repo-url>
-cd ferrisbot
+cd jules-control-plane
 ```
 
 ### Configuration
@@ -111,7 +111,8 @@ Set environment variables:
 
 ```bash
 export DISCORD_TOKEN="your-discord-bot-token"
-export ANTHROPIC_API_KEY="your-claude-api-key"
+export ANTHROPIC_API_KEY="your-api-key"
+export JULES_API_URL="https://api.anthropic.com/v1/messages" # Optional, defaults to Anthropic
 export GATEWAY_PORT="18789"  # Optional, defaults to 18789
 ```
 
@@ -162,44 +163,6 @@ This project follows **strict TDD (Test-Driven Development)**:
 3. **REFACTOR** - Clean up while keeping tests green
 
 All features were developed following this cycle, resulting in high test coverage and reliable code.
-
-## Project Structure
-
-```
-ferrisbot/
-├── Cargo.toml
-├── src/
-│   ├── lib.rs           # Library exports
-│   ├── main.rs          # Binary entry point
-│   ├── app.rs           # App orchestration
-│   ├── error.rs         # Error types
-│   ├── types/           # Core types
-│   │   └── mod.rs
-│   ├── llm/             # Claude API client
-│   │   ├── mod.rs
-│   │   ├── claude.rs
-│   │   └── types.rs
-│   ├── discord/         # Discord integration
-│   │   ├── mod.rs
-│   │   ├── bot.rs
-│   │   └── convert.rs
-│   └── gateway/         # HTTP/WebSocket gateway
-│       ├── mod.rs
-│       ├── server.rs
-│       ├── routes.rs
-│       └── ws.rs
-└── README.md
-```
-
-## Dependencies
-
-- **axum** - HTTP server & WebSocket gateway
-- **serenity** - Discord bot framework
-- **reqwest** - HTTP client for Claude API
-- **tokio** - Async runtime
-- **serde/serde_json** - Serialization
-- **thiserror/anyhow** - Error handling
-- **tracing** - Structured logging
 
 ## License
 

@@ -1,7 +1,7 @@
 // End-to-end integration tests
 
-use ferrisbot::llm::claude::ClaudeClient;
-use ferrisbot::llm::types::{CreateMessageRequest, Message};
+use jules_control_plane::llm::claude::ClaudeClient;
+use jules_control_plane::llm::types::{CreateMessageRequest, Message};
 use wiremock::matchers::{header, method, path};
 use wiremock::{Mock, MockServer, ResponseTemplate};
 
@@ -58,7 +58,7 @@ async fn test_claude_api_integration() {
 
 #[tokio::test]
 async fn test_gateway_health_check() {
-    use ferrisbot::gateway::server::create_router;
+    use jules_control_plane::gateway::server::create_router;
 
     // Create router
     let app = create_router();
@@ -91,8 +91,8 @@ async fn test_gateway_health_check() {
 
 #[tokio::test]
 async fn test_message_conversion_flow() {
-    use ferrisbot::discord::convert::{should_process_message, to_ferris_message};
-    use ferrisbot::types::Message as FerrisMessage;
+    use jules_control_plane::discord::convert::{should_process_message, to_ferris_message};
+    use jules_control_plane::types::Message as FerrisMessage;
 
     // Note: Creating a real Discord Message is complex due to serenity's internal structure
     // For this MVP, we verify the conversion functions exist and can be called
@@ -109,7 +109,7 @@ async fn test_message_conversion_flow() {
 
 #[test]
 fn test_error_handling_throughout_stack() {
-    use ferrisbot::error::FerrisError;
+    use jules_control_plane::error::FerrisError;
 
     // Test IO error conversion
     let io_err = std::io::Error::new(std::io::ErrorKind::NotFound, "test");

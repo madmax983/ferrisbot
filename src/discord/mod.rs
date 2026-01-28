@@ -17,13 +17,13 @@
 //! # Example
 //!
 //! ```no_run
-//! use ferrisbot::discord::bot::DiscordBot;
-//! use ferrisbot::llm::claude::ClaudeClient;
+//! use jules_control_plane::discord::bot::DiscordBot;
+//! use jules_control_plane::llm::claude::ClaudeClient;
 //! use std::sync::Arc;
 //! use tokio::sync::mpsc;
 //!
 //! #[tokio::main]
-//! async fn main() -> ferrisbot::error::Result<()> {
+//! async fn main() -> jules_control_plane::error::Result<()> {
 //!     let bot = DiscordBot::new("your-discord-token");
 //!     let claude = Arc::new(ClaudeClient::new("your-api-key"));
 //!     let (_, shutdown_rx) = mpsc::channel(1);

@@ -15,10 +15,10 @@
 //! ## Quick Start
 //!
 //! ```no_run
-//! use ferrisbot::app::{App, AppConfig};
+//! use jules_control_plane::app::{App, AppConfig};
 //!
 //! #[tokio::main]
-//! async fn main() -> ferrisbot::error::Result<()> {
+//! async fn main() -> jules_control_plane::error::Result<()> {
 //!     // Load configuration from environment variables
 //!     let config = AppConfig::from_env()?;
 //!
