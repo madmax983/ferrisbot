@@ -144,7 +144,7 @@ impl AppConfig {
 ///         discord_token: std::env::var("DISCORD_TOKEN").unwrap(),
 ///         claude_api_key: std::env::var("ANTHROPIC_API_KEY").unwrap(),
 ///         gateway_port: 18789,
-    ///         api_url: None,
+///         api_url: None,
 ///     };
 ///
 ///     let app = App::new(config);
@@ -299,6 +299,10 @@ impl App {
 #[cfg(test)]
 mod tests {
     use super::*;
+    use std::sync::Mutex;
+
+    // Mutex to prevent race conditions when modifying environment variables
+    static ENV_MUTEX: Mutex<()> = Mutex::new(());
 
     #[test]
     fn test_app_creation() {
@@ -315,6 +319,8 @@ mod tests {
 
     #[test]
     fn test_app_config_from_env_missing() {
+        let _guard = ENV_MUTEX.lock().unwrap();
+
         // Clear env vars
         env::remove_var("DISCORD_TOKEN");
         env::remove_var("ANTHROPIC_API_KEY");
@@ -325,6 +331,8 @@ mod tests {
 
     #[test]
     fn test_app_config_with_custom_url() {
+        let _guard = ENV_MUTEX.lock().unwrap();
+
         // Set env vars
         env::set_var("DISCORD_TOKEN", "test");
         env::set_var("ANTHROPIC_API_KEY", "test");

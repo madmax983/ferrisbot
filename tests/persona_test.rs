@@ -1,4 +1,3 @@
-
 use jules_control_plane::llm::types::{CreateMessageRequest, Message};
 
 #[test]
