@@ -346,12 +346,30 @@ impl MessageResponse {
     /// assert_eq!(response.get_text(), "Part 1Part 2");
     /// ```
     pub fn get_text(&self) -> String {
-        self.content
+        // Fast path for single block (very common case)
+        if let [block] = self.content.as_slice() {
+            if block.content_type == "text" {
+                return block.text.clone();
+            }
+        }
+
+        // Calculate capacity to avoid reallocations
+        let capacity: usize = self
+            .content
             .iter()
             .filter(|block| block.content_type == "text")
-            .map(|block| block.text.as_str())
-            .collect::<Vec<_>>()
-            .join("")
+            .map(|block| block.text.len())
+            .sum();
+
+        let mut result = String::with_capacity(capacity);
+        for block in self
+            .content
+            .iter()
+            .filter(|block| block.content_type == "text")
+        {
+            result.push_str(&block.text);
+        }
+        result
     }
 
     /// Check if the response has any content.
@@ -575,5 +593,38 @@ mod tests {
             output_tokens: 20,
         };
         assert_eq!(usage.total(), 30);
+    }
+
+    #[test]
+    fn test_extract_text_from_multiple_blocks() {
+        let json = r#"{
+            "id": "msg_multi",
+            "type": "message",
+            "role": "assistant",
+            "content": [
+                {
+                    "type": "text",
+                    "text": "Part 1"
+                },
+                {
+                    "type": "image",
+                    "text": "ignored"
+                },
+                {
+                    "type": "text",
+                    "text": "Part 2"
+                }
+            ],
+            "model": "claude-sonnet-4-20250514",
+            "stop_reason": "end_turn",
+            "usage": {
+                "input_tokens": 5,
+                "output_tokens": 10
+            }
+        }"#;
+
+        let response: MessageResponse = serde_json::from_str(json).expect("should deserialize");
+        let text = response.get_text();
+        assert_eq!(text, "Part 1Part 2");
     }
 }
