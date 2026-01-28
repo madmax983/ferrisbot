@@ -95,7 +95,8 @@ impl EventHandler for BotHandler {
         let ferris_msg = to_ferris_message(&msg);
 
         // Send to Claude
-        let request = CreateMessageRequest::new(vec![ClaudeMessage::user(&ferris_msg.content)]);
+        // OPTIMIZATION: Move ferris_msg.content instead of borrowing to avoid unnecessary clone
+        let request = CreateMessageRequest::new(vec![ClaudeMessage::user(ferris_msg.content)]);
 
         match self.claude_client.send_message(request).await {
             Ok(response) => {
