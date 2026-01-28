@@ -92,6 +92,16 @@ Discord Reply
 - **[Architecture Decision Records](./docs/adr/)** - Why we built it this way
 - **[Architecture Diagrams](./docs/diagrams/)** - Visual system documentation
 
+## Core Dependencies
+
+- **axum** - HTTP server & WebSocket gateway
+- **serenity** - Discord bot framework
+- **reqwest** - HTTP client for Claude API
+- **tokio** - Async runtime
+- **serde/serde_json** - Serialization
+- **thiserror/anyhow** - Error handling
+- **tracing** - Structured logging
+
 ## Quick Start
 
 ### Prerequisites

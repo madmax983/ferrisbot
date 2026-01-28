@@ -69,6 +69,7 @@ use tracing::info;
 ///     claude_api_key: "test-key".to_string(),
 ///     gateway_port: 8080,
 ///     api_url: None,
+///     system_prompt: "test prompt".to_string(),
 /// };
 ///
 /// assert_eq!(config.gateway_port, 8080);
@@ -85,6 +86,9 @@ pub struct AppConfig {
 
     /// Custom API URL.
     pub api_url: Option<String>,
+
+    /// System prompt for the bot persona.
+    pub system_prompt: String,
 }
 
 impl AppConfig {
@@ -119,11 +123,16 @@ impl AppConfig {
 
         let api_url = env::var("JULES_API_URL").ok();
 
+        let system_prompt = env::var("SYSTEM_PROMPT").unwrap_or_else(|_| {
+            "You are Jules, an extremely skilled software engineer. You are operating as a control plane via Discord.".to_string()
+        });
+
         Ok(Self {
             discord_token,
             claude_api_key,
             gateway_port,
             api_url,
+            system_prompt,
         })
     }
 }
@@ -145,6 +154,7 @@ impl AppConfig {
 ///         claude_api_key: std::env::var("ANTHROPIC_API_KEY").unwrap(),
 ///         gateway_port: 18789,
 ///         api_url: None,
+    ///         system_prompt: "test prompt".to_string(),
 ///     };
 ///
 ///     let app = App::new(config);
@@ -182,7 +192,9 @@ impl App {
     /// let app = App::new(config);
     /// ```
     pub fn new(config: AppConfig) -> Self {
-        let discord_bot = DiscordBot::new(&config.discord_token);
+        let discord_bot = DiscordBot::builder(&config.discord_token)
+            .system_prompt(&config.system_prompt)
+            .build();
 
         let mut client_builder = ClaudeClient::builder(&config.claude_api_key);
         if let Some(url) = &config.api_url {
@@ -311,6 +323,7 @@ mod tests {
             claude_api_key: "test-key".to_string(),
             gateway_port: 8080,
             api_url: None,
+            system_prompt: "test prompt".to_string(),
         };
 
         let app = App::new(config);

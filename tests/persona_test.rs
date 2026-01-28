@@ -1,3 +1,4 @@
+
 use jules_control_plane::llm::types::{CreateMessageRequest, Message};
 
 #[test]
@@ -7,4 +8,13 @@ fn test_jules_persona_request_creation() {
         .with_system("You are Jules, an extremely skilled software engineer. You are operating as a control plane via Discord.");
 
     assert_eq!(request.system, Some("You are Jules, an extremely skilled software engineer. You are operating as a control plane via Discord.".to_string()));
+}
+
+#[test]
+fn test_custom_system_prompt_request() {
+    let content = "Hello";
+    let request = CreateMessageRequest::new(vec![Message::user(content)])
+        .with_system("You are a helpful assistant.");
+
+    assert_eq!(request.system, Some("You are a helpful assistant.".to_string()));
 }

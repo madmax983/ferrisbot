@@ -46,6 +46,7 @@ use tokio::sync::mpsc;
 pub struct DiscordBot {
     token: String,
     intents: GatewayIntents,
+    system_prompt: Option<String>,
 }
 
 impl DiscordBot {
@@ -84,6 +85,7 @@ impl DiscordBot {
         DiscordBotBuilder {
             token: token.into(),
             intents: GatewayIntents::GUILD_MESSAGES | GatewayIntents::MESSAGE_CONTENT,
+            system_prompt: None,
         }
     }
 
@@ -160,7 +162,10 @@ impl DiscordBot {
         claude_client: Arc<ClaudeClient>,
         mut shutdown_rx: mpsc::Receiver<()>,
     ) -> Result<()> {
-        let handler = crate::discord::handler::BotHandler::new(claude_client);
+        let mut handler = crate::discord::handler::BotHandler::new(claude_client);
+        if let Some(prompt) = &self.system_prompt {
+            handler = handler.with_system_prompt(prompt);
+        }
 
         let mut client = Client::builder(&self.token, self.intents)
             .event_handler(handler)
@@ -203,9 +208,16 @@ impl DiscordBot {
 pub struct DiscordBotBuilder {
     token: String,
     intents: GatewayIntents,
+    system_prompt: Option<String>,
 }
 
 impl DiscordBotBuilder {
+    /// Set system prompt.
+    pub fn system_prompt(mut self, prompt: impl Into<String>) -> Self {
+        self.system_prompt = Some(prompt.into());
+        self
+    }
+
     /// Set custom gateway intents.
     ///
     /// # Arguments
@@ -232,6 +244,7 @@ impl DiscordBotBuilder {
         DiscordBot {
             token: self.token,
             intents: self.intents,
+            system_prompt: self.system_prompt,
         }
     }
 }

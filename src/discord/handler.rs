@@ -52,6 +52,7 @@ use tracing::{error, info};
 /// ```
 pub struct BotHandler {
     claude_client: Arc<ClaudeClient>,
+    system_prompt: Option<String>,
 }
 
 impl BotHandler {
@@ -72,7 +73,16 @@ impl BotHandler {
     /// let handler = BotHandler::new(claude);
     /// ```
     pub fn new(claude_client: Arc<ClaudeClient>) -> Self {
-        Self { claude_client }
+        Self {
+            claude_client,
+            system_prompt: None,
+        }
+    }
+
+    /// Set a custom system prompt.
+    pub fn with_system_prompt(mut self, prompt: impl Into<String>) -> Self {
+        self.system_prompt = Some(prompt.into());
+        self
     }
 }
 
@@ -95,8 +105,13 @@ impl EventHandler for BotHandler {
         let ferris_msg = to_ferris_message(&msg);
 
         // Send to Claude
-        let request = CreateMessageRequest::new(vec![ClaudeMessage::user(&ferris_msg.content)])
-            .with_system("You are Jules, an extremely skilled software engineer. You are operating as a control plane via Discord.");
+        let mut request = CreateMessageRequest::new(vec![ClaudeMessage::user(&ferris_msg.content)]);
+
+        if let Some(prompt) = &self.system_prompt {
+            request = request.with_system(prompt);
+        } else {
+            request = request.with_system("You are Jules, an extremely skilled software engineer. You are operating as a control plane via Discord.");
+        }
 
         match self.claude_client.send_message(request).await {
             Ok(response) => {
